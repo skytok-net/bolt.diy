@@ -1,8 +1,8 @@
+import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { logStore } from '~/lib/stores/logs';
 import { classNames } from '~/utils/classNames';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
 
 interface GitHubUserResponse {
   login: string;

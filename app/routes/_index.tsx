@@ -1,12 +1,12 @@
 import { json, type MetaFunction } from '@remix-run/cloudflare';
+import { useState } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
+import { ControlPanel } from '~/components/@settings';
 import { BaseChat } from '~/components/chat/BaseChat';
 import { Chat } from '~/components/chat/Chat.client';
 import { Header } from '~/components/header/Header';
 import BackgroundRays from '~/components/ui/BackgroundRays';
-import { ControlPanel } from '~/components/@settings';
 import { SettingsButton } from '~/components/ui/SettingsButton';
-import { useState } from 'react';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Bolt' }, { name: 'description', content: 'Talk with Bolt, an AI assistant from StackBlitz' }];

@@ -34,8 +34,7 @@ ARG AWS_BEDROCK_CONFIG
 ARG VITE_LOG_LEVEL=debug
 ARG DEFAULT_NUM_CTX
 
-ENV WRANGLER_SEND_METRICS=false \
-    GROQ_API_KEY=${GROQ_API_KEY} \
+ENV GROQ_API_KEY=${GROQ_API_KEY} \
     HuggingFace_KEY=${HuggingFace_API_KEY} \
     OPENAI_API_KEY=${OPENAI_API_KEY} \
     ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY} \
@@ -50,13 +49,23 @@ ENV WRANGLER_SEND_METRICS=false \
     DEFAULT_NUM_CTX=${DEFAULT_NUM_CTX}\
     RUNNING_IN_DOCKER=true
 
-# Pre-configure wrangler to disable metrics
-RUN mkdir -p /root/.config/.wrangler && \
-    echo '{"enabled":false}' > /root/.config/.wrangler/metrics.json
+ENV NODE_OPTIONS='--max-old-space-size=8192' \
+    NODE_ENV=production \
+    VITE_BUILD_MODE=production
 
-RUN pnpm run build
+RUN NODE_ENV=production pnpm run build
 
-CMD [ "pnpm", "run", "dockerstart"]
+# Create a non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 remixjs
+
+# Set proper permissions
+RUN chown -R remixjs:nodejs /app
+
+# Switch to non-root user
+USER remixjs
+
+CMD [ "pnpm", "run", "start"]
 
 # Development image
 FROM base AS bolt-ai-development

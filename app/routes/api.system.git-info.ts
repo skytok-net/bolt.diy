@@ -1,6 +1,6 @@
+import { execSync } from 'node:child_process';
 import type { LoaderFunction } from '@remix-run/cloudflare';
 import { json } from '@remix-run/cloudflare';
-import { execSync } from 'child_process';
 
 interface GitHubRepoInfo {
   name: string;

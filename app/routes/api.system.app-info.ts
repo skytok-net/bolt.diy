@@ -1,6 +1,6 @@
+import { execSync } from 'node:child_process';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/cloudflare';
 import { json } from '@remix-run/cloudflare';
-import { execSync } from 'child_process';
 
 // These are injected by Vite at build time
 declare const __APP_VERSION: string;
