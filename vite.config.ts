@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { vitePlugin as remixVitePlugin } from '@remix-run/dev';
+import { vitePlugin as remixVitePlugin, cloudflareDevProxyVitePlugin } from '@remix-run/dev';
 import * as dotenv from 'dotenv';
 import UnoCSS from 'unocss/vite';
 import { defineConfig, type ViteDevServer } from 'vite';
@@ -95,15 +95,18 @@ export default defineConfig((config) => {
       rollupOptions: {
         output: {
           format: 'es',
-          // Remove inlineDynamicImports as it doesn't support multiple entry points
           manualChunks: undefined,
         },
+        external: [
+          '@remix-run/cloudflare',
+        ],
       },
     },
     plugins: [
       nodePolyfills({
         include: ['path', 'buffer', 'process'],
       }),
+      cloudflareDevProxyVitePlugin(),
       remixVitePlugin({
         future: {
           v3_fetcherPersist: true,
