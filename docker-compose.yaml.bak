@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   app-prod:
     image: bolt-ai:production
@@ -9,10 +7,11 @@ services:
       target: bolt-ai-production
     ports:
       - '5173:5173'
-    env_file: .env.local
+    env_file: ./.env.local
     environment:
       - NODE_ENV=production
       - COMPOSE_PROFILES=production
+      # No strictly needed but serving as hints for Coolify
       - PORT=5173
       - GROQ_API_KEY=${GROQ_API_KEY}
       - HuggingFace_API_KEY=${HuggingFace_API_KEY}
@@ -34,10 +33,12 @@ services:
     profiles:
       - production
     labels:
+      # Enable Traefik
       - "traefik.enable=true"
       - "traefik.http.routers.ollama.rule=Host(`bolt.prometheusags.ai`)"
       - "traefik.http.routers.ollama.entrypoints=websecure"
       - "traefik.http.routers.ollama.tls.certresolver=myresolver"
+      # Service configuration
       - "traefik.http.services.ollama.loadbalancer.server.port=5173"
     networks:
       - traefik_network
@@ -48,7 +49,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: bolt-ai-development
-    env_file: .env.local
+    env_file: '.env.local'
     environment:
       - NODE_ENV=development
       - VITE_HMR_PROTOCOL=ws
@@ -82,9 +83,7 @@ services:
     ports:
       - '5173:5173'
     command: pnpm run dev --host 0.0.0.0
-    profiles:
-      - development
-      - default
+    profiles: ['development', 'default']
 
   app-prebuild:
     image: ghcr.io/stackblitz-labs/bolt.diy:latest
@@ -93,6 +92,7 @@ services:
     environment:
       - NODE_ENV=production
       - COMPOSE_PROFILES=production
+      # No strictly needed but serving as hints for Coolify
       - PORT=5173
       - OLLAMA_API_BASE_URL=http://127.0.0.1:11434
       - DEFAULT_NUM_CTX=${DEFAULT_NUM_CTX:-32768}
@@ -105,4 +105,4 @@ services:
 
 networks:
   traefik_network:
-    external: true
+    external: true  # This assumes your Traefik service is on an external network
