@@ -4,6 +4,7 @@ import { chatStore } from '~/lib/stores/chat';
 import { classNames } from '~/utils/classNames';
 import { HeaderActionButtons } from './HeaderActionButtons.client';
 import { ChatDescription } from '~/lib/persistence/ChatDescription.client';
+import { toggleMenu } from '~/lib/stores/menu';
 
 export function Header() {
   const chat = useStore(chatStore);
@@ -15,9 +16,17 @@ export function Header() {
         'border-bolt-elements-borderColor': chat.started,
       })}
     >
-      <div className="flex items-center gap-2 z-logo text-bolt-elements-textPrimary cursor-pointer">
-        <div className="i-ph:sidebar-simple-duotone text-xl" />
-        <a href="/" className="text-2xl font-black text-bolt-elements-textPrimary flex items-center gap-2" style={{ fontFamily: 'Inter, system-ui, sans-serif', fontStretch: 'condensed' }}>
+      <div className="flex items-center gap-2 z-logo text-bolt-elements-textPrimary">
+        <button
+          onClick={toggleMenu}
+          className="i-ph:sidebar-simple-duotone text-xl cursor-pointer hover:text-prometheus-yellow transition-colors p-1 rounded"
+          aria-label="Toggle menu"
+        />
+        <a
+          href="/"
+          className="text-2xl font-black text-bolt-elements-textPrimary flex items-center gap-2"
+          style={{ fontFamily: 'Inter, system-ui, sans-serif', fontStretch: 'condensed' }}
+        >
           <div className="i-ph:lightning-fill text-3xl text-prometheus-yellow" />
           <span>Bolt</span>
         </a>

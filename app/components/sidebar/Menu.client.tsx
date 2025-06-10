@@ -14,6 +14,7 @@ import { useSearchFilter } from '~/lib/hooks/useSearchFilter';
 import { classNames } from '~/utils/classNames';
 import { useStore } from '@nanostores/react';
 import { profileStore } from '~/lib/stores/profile';
+import { menuStore, closeMenu, openMenu } from '~/lib/stores/menu';
 
 const menuVariants = {
   closed: {
@@ -67,7 +68,8 @@ export const Menu = () => {
   const { duplicateCurrentChat, exportChat } = useChatHistory();
   const menuRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<ChatHistoryItem[]>([]);
-  const [open, setOpen] = useState(false);
+  const menuState = useStore(menuStore);
+  const open = menuState.isOpen;
   const [dialogContent, setDialogContent] = useState<DialogContent>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const profile = useStore(profileStore);
@@ -267,6 +269,20 @@ export const Menu = () => {
     }
   }, [open, loadEntries]);
 
+  // Listen for custom event to open settings
+  useEffect(() => {
+    const handleOpenSettings = (_event: CustomEvent) => {
+      setIsSettingsOpen(true);
+      closeMenu();
+    };
+
+    window.addEventListener('openSettings', handleOpenSettings as EventListener);
+
+    return () => {
+      window.removeEventListener('openSettings', handleOpenSettings as EventListener);
+    };
+  }, []);
+
   // Exit selection mode when sidebar is closed
   useEffect(() => {
     if (!open && selectionMode) {
@@ -288,11 +304,11 @@ export const Menu = () => {
       }
 
       if (event.pageX < enterThreshold) {
-        setOpen(true);
+        openMenu();
       }
 
       if (menuRef.current && event.clientX > menuRef.current.getBoundingClientRect().right + exitThreshold) {
-        setOpen(false);
+        closeMenu();
       }
     }
 
@@ -310,7 +326,7 @@ export const Menu = () => {
 
   const handleSettingsClick = () => {
     setIsSettingsOpen(true);
-    setOpen(false);
+    closeMenu();
   };
 
   const handleSettingsClose = () => {

@@ -1,5 +1,6 @@
 import type { Message } from 'ai';
 import { generateId } from './fileUtils';
+import { detectPackageManager } from './packageManager';
 
 export interface ProjectCommands {
   type: string;
@@ -27,24 +28,27 @@ export async function detectProjectCommands(files: FileContent[]): Promise<Proje
       const packageJson = JSON.parse(packageJsonFile.content);
       const scripts = packageJson?.scripts || {};
 
+      // Detect package manager based on lock files
+      const pm = detectPackageManager(files);
+
       // Check for preferred commands in priority order
       const preferredCommands = ['dev', 'start', 'preview'];
       const availableCommand = preferredCommands.find((cmd) => scripts[cmd]);
 
       if (availableCommand) {
+        const startCommand = pm.name === 'npm' ? `npm run ${availableCommand}` : `${pm.runCommand} ${availableCommand}`;
         return {
           type: 'Node.js',
-          setupCommand: `npm install`,
-          startCommand: `npm run ${availableCommand}`,
-          followupMessage: `Found "${availableCommand}" script in package.json. Running "npm run ${availableCommand}" after installation.`,
+          setupCommand: pm.installCommand,
+          startCommand,
+          followupMessage: `Found "${availableCommand}" script in package.json. Running "${startCommand}" after installation using ${pm.name}.`,
         };
       }
 
       return {
         type: 'Node.js',
-        setupCommand: 'npm install',
-        followupMessage:
-          'Would you like me to inspect package.json to determine the available scripts for running this project?',
+        setupCommand: pm.installCommand,
+        followupMessage: `Would you like me to inspect package.json to determine the available scripts for running this project? Using ${pm.name} as package manager.`,
       };
     } catch (error) {
       console.error('Error parsing package.json:', error);

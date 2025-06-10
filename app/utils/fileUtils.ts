@@ -1,4 +1,5 @@
 import ignore from 'ignore';
+import { detectPackageManagerFromFiles } from './packageManager';
 
 // Common patterns to ignore, similar to .gitignore
 export const IGNORE_PATTERNS = [
@@ -73,23 +74,26 @@ export const detectProjectType = async (
     const packageJson = await readPackageJson(files);
     const scripts = packageJson?.scripts || {};
 
+    // Detect package manager based on lock files
+    const pm = detectPackageManagerFromFiles(files);
+
     // Check for preferred commands in priority order
     const preferredCommands = ['dev', 'start', 'preview'];
     const availableCommand = preferredCommands.find((cmd) => scripts[cmd]);
 
     if (availableCommand) {
+      const runCommand = pm.name === 'npm' ? `npm run ${availableCommand}` : `${pm.runCommand} ${availableCommand}`;
       return {
         type: 'Node.js',
-        setupCommand: `npm install && npm run ${availableCommand}`,
-        followupMessage: `Found "${availableCommand}" script in package.json. Running "npm run ${availableCommand}" after installation.`,
+        setupCommand: `${pm.installCommand} && ${runCommand}`,
+        followupMessage: `Found "${availableCommand}" script in package.json. Running "${runCommand}" after installation using ${pm.name}.`,
       };
     }
 
     return {
       type: 'Node.js',
-      setupCommand: 'npm install',
-      followupMessage:
-        'Would you like me to inspect package.json to determine the available scripts for running this project?',
+      setupCommand: pm.installCommand,
+      followupMessage: `Would you like me to inspect package.json to determine the available scripts for running this project? Using ${pm.name} as package manager.`,
     };
   }
 
