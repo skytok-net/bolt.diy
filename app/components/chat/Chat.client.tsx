@@ -60,8 +60,8 @@ export function Chat() {
       <ToastContainer
         closeButton={({ closeToast }) => {
           return (
-            <button className="Toastify__close-button" onClick={closeToast}>
-              <div className="i-ph:x text-lg" />
+            <button className="Toastify__close-button" onClick={closeToast} aria-label="Close notification">
+              <div className="i-ph:x text-lg" aria-hidden="true" />
             </button>
           );
         }}
@@ -71,10 +71,12 @@ export function Chat() {
            */
           switch (type) {
             case 'success': {
-              return <div className="i-ph:check-bold text-bolt-elements-icon-success text-2xl" />;
+              return <div className="i-ph:check-bold text-bolt-elements-icon-success text-2xl" aria-hidden="true" />;
             }
             case 'error': {
-              return <div className="i-ph:warning-circle-bold text-bolt-elements-icon-error text-2xl" />;
+              return (
+                <div className="i-ph:warning-circle-bold text-bolt-elements-icon-error text-2xl" aria-hidden="true" />
+              );
             }
           }
 

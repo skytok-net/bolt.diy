@@ -100,6 +100,7 @@ export function HistoryItem({
             type="submit"
             className="i-ph:check h-4 w-4 text-gray-500 hover:text-prometheus-yellow transition-colors"
             onMouseDown={handleSubmit}
+            aria-label="Save changes"
           />
         </form>
       ) : (
@@ -180,6 +181,7 @@ const ChatActionButton = forwardRef(
           type="button"
           className={`text-gray-400 dark:text-gray-500 hover:text-prometheus-yellow dark:hover:text-prometheus-yellow transition-colors ${icon} ${className ? className : ''}`}
           onClick={onClick}
+          aria-label={toolTipContent}
         />
       </WithTooltip>
     );

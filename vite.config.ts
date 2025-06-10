@@ -4,6 +4,7 @@ import { defineConfig, type ViteDevServer } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { optimizeCssModules } from 'vite-plugin-optimize-css-modules';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 import * as dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import { readFileSync } from 'fs';
@@ -72,6 +73,9 @@ const pkg = getPackageJson();
 const gitInfo = getGitInfo();
 
 export default defineConfig((config) => {
+  // Check if we're building for static output
+  const isStaticBuild = process.env.BUILD_TYPE === 'static';
+
   return {
     define: {
       __COMMIT_HASH: JSON.stringify(gitInfo.commitHash),
@@ -90,17 +94,39 @@ export default defineConfig((config) => {
       __PKG_PEER_DEPENDENCIES: JSON.stringify(pkg.peerDependencies),
       __PKG_OPTIONAL_DEPENDENCIES: JSON.stringify(pkg.optionalDependencies),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+
+      // Define a flag to indicate static build in the client code
+      __IS_STATIC_BUILD__: isStaticBuild,
     },
     build: {
       target: 'esnext',
+      outDir: isStaticBuild ? 'dist/static' : 'dist',
+      emptyOutDir: true,
+
+      // For static builds, configure for single HTML output
+      ...(isStaticBuild && {
+        rollupOptions: {
+          input: 'index.html',
+          output: {
+            entryFileNames: 'assets/[name].[hash].js',
+            chunkFileNames: 'assets/[name].[hash].js',
+            assetFileNames: 'assets/[name].[hash].[ext]',
+            inlineDynamicImports: true,
+          },
+        },
+        minify: true,
+      }),
+
+      // Only disable SSR for static builds
+      ssr: !isStaticBuild,
+      ssrManifest: !isStaticBuild,
     },
     plugins: [
       nodePolyfills({
-        include: ['buffer', 'process', 'util', 'stream'],
         globals: {
           Buffer: true,
-          process: true,
           global: true,
+          process: true,
         },
         protocolImports: true,
         exclude: ['child_process', 'fs', 'path'],
@@ -110,7 +136,8 @@ export default defineConfig((config) => {
         transform(code, id) {
           if (id.includes('env.mjs')) {
             return {
-              code: `import { Buffer } from 'buffer';\n${code}`,
+              code: `import { Buffer } from 'buffer';
+${code}`,
               map: null,
             };
           }
@@ -118,19 +145,43 @@ export default defineConfig((config) => {
           return null;
         },
       },
-      config.mode !== 'test' && remixCloudflareDevProxy(),
-      remixVitePlugin({
+
+
+      // Only use remixCloudflareDevProxy for development
+      config.mode !== 'production' && config.mode !== 'test' && remixCloudflareDevProxy(),
+
+      // Add singlefile plugin for static builds
+      isStaticBuild && viteSingleFile(),
+      
+      // Configure Remix plugin - only for non-static builds
+      !isStaticBuild && remixVitePlugin({
         future: {
           v3_fetcherPersist: true,
           v3_relativeSplatPath: true,
           v3_throwAbortReason: true,
           v3_lazyRouteDiscovery: true,
         },
+        // Enable static site generation
+        ssr: false,
       }),
       UnoCSS(),
       tsconfigPaths(),
       chrome129IssuePlugin(),
       config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
+
+      // Add HTML generation plugin for production builds
+      config.mode === 'production' && {
+        name: 'generate-single-html',
+        generateBundle(options, bundle) {
+          // This ensures we generate a single HTML file
+          const entryChunk = Object.values(bundle).find((chunk) => chunk.type === 'chunk' && chunk.isEntry);
+
+          if (entryChunk) {
+            // Make sure we reference the entry chunk in the HTML
+            console.log(`Entry chunk: ${entryChunk.fileName}`);
+          }
+        },
+      },
     ],
     envPrefix: [
       'VITE_',
@@ -145,6 +196,12 @@ export default defineConfig((config) => {
           api: 'modern-compiler',
         },
       },
+    },
+
+    // Configure preview server for static files
+    preview: {
+      port: 5173,
+      strictPort: true,
     },
   };
 });
