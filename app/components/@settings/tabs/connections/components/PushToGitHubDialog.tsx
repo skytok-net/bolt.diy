@@ -455,6 +455,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                     <motion.button
                       onClick={() => {
                         handleClose();
+
                         // Open the settings panel by dispatching a custom event
                         window.dispatchEvent(new CustomEvent('openSettings', { detail: { tab: 'connections' } }));
                       }}

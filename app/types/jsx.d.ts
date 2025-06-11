@@ -1,7 +1,4 @@
-/// <reference types="vite/client" />
-
-declare const __COMMIT_HASH: string;
-declare const __APP_VERSION: string;
+import 'react';
 
 declare global {
   namespace JSX {

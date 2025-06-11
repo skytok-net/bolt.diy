@@ -19,7 +19,7 @@ body {
   --primary-color: rgba(255, 221, 0, var(--gradient-opacity));
   --secondary-color: rgba(0, 163, 163, var(--gradient-opacity));
   --accent-color: rgba(77, 159, 255, var(--gradient-opacity));
-  
+
   /* Prometheus Typography */
   --font-heading: 'Inter', system-ui, sans-serif;
   --font-body: 'Roboto', system-ui, sans-serif;
@@ -27,7 +27,12 @@ body {
 }
 
 /* Prometheus Typography Hierarchy */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   color: var(--bolt-elements-textPrimary);
@@ -65,7 +70,10 @@ h6 {
 }
 
 /* Body Text */
-body, p, span, div {
+body,
+p,
+span,
+div {
   font-family: var(--font-body);
   font-weight: 400;
   color: var(--bolt-elements-textPrimary);
@@ -73,7 +81,12 @@ body, p, span, div {
 }
 
 /* Code and Terminal Elements - Must use monospace fonts */
-code, pre, kbd, samp, tt, var,
+code,
+pre,
+kbd,
+samp,
+tt,
+var,
 .font-mono,
 .xterm,
 .xterm *,
@@ -85,11 +98,11 @@ code, pre, kbd, samp, tt, var,
 .shiki pre,
 .monaco-editor,
 .monaco-editor *,
-[class*="terminal"],
-[class*="Terminal"],
-[class*="code"],
-[class*="command"],
-textarea[class*="terminal"],
+[class*='terminal'],
+[class*='Terminal'],
+[class*='code'],
+[class*='command'],
+textarea[class*='terminal'],
 .terminal-output,
 .command-output,
 .bg-bolt-elements-actions-code-background,
@@ -104,18 +117,20 @@ textarea[class*="terminal"],
 }
 
 /* Ensure Shiki code blocks use monospace */
-.shiki, .shiki span, .shiki code {
+.shiki,
+.shiki span,
+.shiki code {
   font-family: var(--font-mono) !important;
 }
 
 /* Prometheus Flame Gradient Utilities */
 .prometheus-flame {
-  background: linear-gradient(to bottom, #FFDD00, #FF5500, #FF4D4D, #0A192D);
+  background: linear-gradient(to bottom, #ffdd00, #ff5500, #ff4d4d, #0a192d);
   border-radius: 25% 25% 25% 25% / 35% 35% 25% 25%;
 }
 
 .prometheus-text-gradient {
-  background: linear-gradient(to bottom, #FFDD00, #FF5500, #FF4D4D, #0A192D);
+  background: linear-gradient(to bottom, #ffdd00, #ff5500, #ff4d4d, #0a192d);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

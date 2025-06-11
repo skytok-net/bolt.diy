@@ -43,6 +43,6 @@ export default class XAIProvider extends BaseProvider {
       apiKey,
     });
 
-    return openai(model);
+    return openai(model) as LanguageModelV1;
   }
 }

@@ -87,6 +87,6 @@ export default class GoogleProvider extends BaseProvider {
       apiKey,
     });
 
-    return google(model);
+    return google(model) as LanguageModelV1;
   }
 }

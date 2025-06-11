@@ -260,15 +260,15 @@ const parseGitHubUrl = (templateUrl: string): string | null => {
   try {
     // Remove .git suffix if present
     const cleanUrl = templateUrl.replace(/\.git$/, '');
-    
+
     // Handle different GitHub URL formats
     const githubRegex = /(?:https?:\/\/)?(?:www\.)?github\.com\/([^\/]+\/[^\/]+)/;
     const match = cleanUrl.match(githubRegex);
-    
+
     if (match && match[1]) {
       return match[1]; // Returns "user/repo"
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error parsing GitHub URL:', error);
@@ -283,7 +283,7 @@ export async function getTemplateFromUrl(templateUrl: string, title?: string) {
   try {
     // Parse the GitHub URL to get repo name
     const repoName = parseGitHubUrl(templateUrl);
-    
+
     if (!repoName) {
       throw new Error('Invalid GitHub URL format. Please provide a valid GitHub repository URL.');
     }
@@ -293,8 +293,10 @@ export async function getTemplateFromUrl(templateUrl: string, title?: string) {
 
     let filteredFiles = files;
 
-    // Apply same filtering logic as existing template processing
-    // Exclude .git files
+    /*
+     * Apply same filtering logic as existing template processing
+     * Exclude .git files
+     */
     filteredFiles = filteredFiles.filter((x) => x.path.startsWith('.git') == false);
 
     // Exclude .bolt files from main content
@@ -335,7 +337,7 @@ ${file.content}
 `;
 
     let userMessage = ``;
-    
+
     // Check for template prompt file
     const templatePromptFile = files.filter((x) => x.path.startsWith('.bolt')).find((x) => x.name == 'prompt');
 

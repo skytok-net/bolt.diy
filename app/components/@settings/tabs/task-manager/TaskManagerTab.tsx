@@ -261,11 +261,11 @@ const TaskManagerTab: React.FC = () => {
   const [isNotSupported, setIsNotSupported] = useState<boolean>(false);
 
   // Chart refs for cleanup
-  const memoryChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const batteryChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const networkChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const cpuChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const diskChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
+  const memoryChartRef = React.useRef<Chart<'line', number[], string>>(null!);
+  const batteryChartRef = React.useRef<Chart<'line', number[], string>>(null!);
+  const networkChartRef = React.useRef<Chart<'line', number[], string>>(null!);
+  const cpuChartRef = React.useRef<Chart<'line', number[], string>>(null!);
+  const diskChartRef = React.useRef<Chart<'line', number[], string>>(null!);
 
   // Cleanup chart instances on unmount
   React.useEffect(() => {

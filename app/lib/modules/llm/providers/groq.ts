@@ -89,6 +89,6 @@ export default class GroqProvider extends BaseProvider {
       apiKey,
     });
 
-    return openai(model);
+    return openai(model) as LanguageModelV1;
   }
 }

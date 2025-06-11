@@ -34,7 +34,6 @@ win:
   icon: assets/icons/icon.ico
   target:
     - nsis
-  signDlls: false
   artifactName: ${name}-${version}-${os}-${arch}.${ext}
 
 linux:

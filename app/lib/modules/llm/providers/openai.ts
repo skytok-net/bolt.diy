@@ -85,6 +85,6 @@ export default class OpenAIProvider extends BaseProvider {
       apiKey,
     });
 
-    return openai(model);
+    return openai(model) as LanguageModelV1;
   }
 }

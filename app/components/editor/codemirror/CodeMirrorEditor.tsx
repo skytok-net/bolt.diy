@@ -145,13 +145,13 @@ export const CodeMirrorEditor = memo(
     const [envMaskingCompartment] = useState(new Compartment());
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const viewRef = useRef<EditorView>();
-    const themeRef = useRef<Theme>();
-    const docRef = useRef<EditorDocument>();
-    const editorStatesRef = useRef<EditorStates>();
-    const onScrollRef = useRef(onScroll);
-    const onChangeRef = useRef(onChange);
-    const onSaveRef = useRef(onSave);
+    const viewRef = useRef<EditorView | undefined>(undefined);
+    const themeRef = useRef<Theme | undefined>(undefined);
+    const docRef = useRef<EditorDocument | undefined>(undefined);
+    const editorStatesRef = useRef<EditorStates | undefined>(undefined);
+    const onScrollRef = useRef<OnScrollCallback | undefined>(onScroll);
+    const onChangeRef = useRef<OnChangeCallback | undefined>(onChange);
+    const onSaveRef = useRef<OnSaveCallback | undefined>(onSave);
 
     /**
      * This effect is used to avoid side effects directly in the render function

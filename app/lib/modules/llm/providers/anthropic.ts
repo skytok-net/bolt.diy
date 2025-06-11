@@ -98,6 +98,6 @@ export default class AnthropicProvider extends BaseProvider {
       headers: { 'anthropic-beta': 'output-128k-2025-02-19' },
     });
 
-    return anthropic(model);
+    return anthropic(model) as LanguageModelV1;
   };
 }

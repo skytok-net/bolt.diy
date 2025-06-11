@@ -1,0 +1,50 @@
+{
+  "name": "bolt-diy-nextjs-integration",
+  "version": "1.0.0",
+  "description": "Example Next.js application demonstrating Bolt.diy embedding",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "setup-bolt": "node scripts/setup-bolt-diy.js",
+    "build-bolt": "node scripts/build-bolt-diy.js"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^15.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "bolt.diy",
+    "nextjs",
+    "webcontainer",
+    "code-editor",
+    "embedding"
+  ],
+  "author": "Bolt.diy Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stackblitz/bolt.diy.git",
+    "directory": "examples/nextjs-integration"
+  },
+  "bugs": {
+    "url": "https://github.com/stackblitz/bolt.diy/issues"
+  },
+  "homepage": "https://github.com/stackblitz/bolt.diy#readme"
+}

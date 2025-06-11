@@ -48,6 +48,6 @@ export default class GithubProvider extends BaseProvider {
       apiKey,
     });
 
-    return openai(model);
+    return openai(model) as LanguageModelV1;
   }
 }

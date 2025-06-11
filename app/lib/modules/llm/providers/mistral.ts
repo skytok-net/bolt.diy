@@ -48,6 +48,6 @@ export default class MistralProvider extends BaseProvider {
       apiKey,
     });
 
-    return mistral(model);
+    return mistral(model) as LanguageModelV1;
   }
 }

@@ -90,6 +90,6 @@ export default class TogetherProvider extends BaseProvider {
       throw new Error(`Missing configuration for ${this.name} provider`);
     }
 
-    return getOpenAILikeModel(baseUrl, apiKey, model);
+    return getOpenAILikeModel(baseUrl, apiKey, model) as LanguageModelV1;
   }
 }

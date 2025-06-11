@@ -528,9 +528,11 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
           `;
 
           // Write the HTML content to the new window
-          newWindow.document.open();
-          newWindow.document.write(htmlContent);
-          newWindow.document.close();
+          if (newWindow && 'document' in newWindow) {
+            (newWindow as any).document.open();
+            (newWindow as any).document.write(htmlContent);
+            (newWindow as any).document.close();
+          }
         } else {
           // Standard window without frame
           const newWindow = window.open(
@@ -1007,7 +1009,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
               <ScreenshotSelector
                 isSelectionMode={isSelectionMode}
                 setIsSelectionMode={setIsSelectionMode}
-                containerRef={iframeRef}
+                containerRef={iframeRef as React.RefObject<HTMLElement>}
               />
             </>
           ) : (

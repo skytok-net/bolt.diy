@@ -8,6 +8,7 @@
       "@types/dom-speech-recognition",
       "electron"
     ],
+    "jsxImportSource": "react",
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -33,6 +34,10 @@
     "**/.server/**/*.ts",
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
+    "**/.client/**/*.tsx",
+    "app/types/jsx.d.ts"
+  ],
+  "exclude": [
+    "examples"
   ]
 }

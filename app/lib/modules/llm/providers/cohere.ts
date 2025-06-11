@@ -49,6 +49,6 @@ export default class CohereProvider extends BaseProvider {
       apiKey,
     });
 
-    return cohere(model);
+    return cohere(model) as LanguageModelV1;
   }
 }

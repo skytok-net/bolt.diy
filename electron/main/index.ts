@@ -97,7 +97,7 @@ process.on('unhandledRejection', async (error) => {
 
 console.log('appPath:', app.getAppPath());
 
-const keys: Parameters<typeof app.getPath>[number][] = ['home', 'appData', 'userData', 'sessionData', 'logs', 'temp'];
+const keys: Parameters<typeof app.getPath>[number][] = ['home', 'appData', 'userData', 'temp'];
 keys.forEach((key) => console.log(`${key}:`, app.getPath(key)));
 console.log('start whenReady');
 

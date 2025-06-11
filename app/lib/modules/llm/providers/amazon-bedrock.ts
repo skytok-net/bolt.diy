@@ -114,6 +114,6 @@ export default class AmazonBedrockProvider extends BaseProvider {
     const config = this._parseAndValidateConfig(apiKey);
     const bedrock = createAmazonBedrock(config);
 
-    return bedrock(model);
+    return bedrock(model) as LanguageModelV1;
   }
 }

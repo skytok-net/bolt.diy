@@ -5,7 +5,6 @@ import { themeStore } from '~/lib/stores/theme';
 import { useState } from 'react';
 
 export default function Settings() {
-  const theme = useStore(themeStore);
   const [activeTab, setActiveTab] = useState('general');
 
   const tabs = [
@@ -22,9 +21,7 @@ export default function Settings() {
         <div className="max-w-6xl mx-auto p-6">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-bolt-elements-textPrimary mb-2">Settings</h1>
-            <p className="text-bolt-elements-textSecondary">
-              Configure your Bolt preferences and connections
-            </p>
+            <p className="text-bolt-elements-textSecondary">Configure your Bolt preferences and connections</p>
           </div>
 
           <div className="flex gap-8">
@@ -77,9 +74,7 @@ function GeneralSettings() {
           <div className="flex items-center justify-between p-4 bg-bolt-elements-background-depth-2 rounded-lg">
             <div>
               <h3 className="font-medium text-bolt-elements-textPrimary">Auto-save</h3>
-              <p className="text-sm text-bolt-elements-textSecondary">
-                Automatically save your work as you type
-              </p>
+              <p className="text-sm text-bolt-elements-textSecondary">Automatically save your work as you type</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" defaultChecked />
@@ -90,9 +85,7 @@ function GeneralSettings() {
           <div className="flex items-center justify-between p-4 bg-bolt-elements-background-depth-2 rounded-lg">
             <div>
               <h3 className="font-medium text-bolt-elements-textPrimary">Show line numbers</h3>
-              <p className="text-sm text-bolt-elements-textSecondary">
-                Display line numbers in the code editor
-              </p>
+              <p className="text-sm text-bolt-elements-textSecondary">Display line numbers in the code editor</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" defaultChecked />
@@ -150,7 +143,9 @@ function AppearanceSettings() {
             <h3 className="font-medium text-bolt-elements-textPrimary mb-3">Font Size</h3>
             <select className="w-full px-3 py-2 bg-bolt-elements-background-depth-3 border border-bolt-elements-borderColor rounded-lg text-bolt-elements-textPrimary">
               <option value="12">12px</option>
-              <option value="14" selected>14px</option>
+              <option value="14" selected>
+                14px
+              </option>
               <option value="16">16px</option>
               <option value="18">18px</option>
             </select>
@@ -211,15 +206,21 @@ function AdvancedSettings() {
             </p>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm text-bolt-elements-textSecondary">
-                <span className="w-6 h-6 bg-bolt-elements-button-primary-background text-bolt-elements-button-primary-text rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                <span className="w-6 h-6 bg-bolt-elements-button-primary-background text-bolt-elements-button-primary-text rounded-full flex items-center justify-center text-xs font-bold">
+                  1
+                </span>
                 yarn (yarn.lock)
               </div>
               <div className="flex items-center gap-2 text-sm text-bolt-elements-textSecondary">
-                <span className="w-6 h-6 bg-bolt-elements-button-primary-background text-bolt-elements-button-primary-text rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                <span className="w-6 h-6 bg-bolt-elements-button-primary-background text-bolt-elements-button-primary-text rounded-full flex items-center justify-center text-xs font-bold">
+                  2
+                </span>
                 pnpm (pnpm-lock.yaml)
               </div>
               <div className="flex items-center gap-2 text-sm text-bolt-elements-textSecondary">
-                <span className="w-6 h-6 bg-bolt-elements-button-primary-background text-bolt-elements-button-primary-text rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                <span className="w-6 h-6 bg-bolt-elements-button-primary-background text-bolt-elements-button-primary-text rounded-full flex items-center justify-center text-xs font-bold">
+                  3
+                </span>
                 npm (package-lock.json or fallback)
               </div>
             </div>
@@ -227,9 +228,7 @@ function AdvancedSettings() {
 
           <div className="p-4 bg-bolt-elements-background-depth-2 rounded-lg">
             <h3 className="font-medium text-bolt-elements-textPrimary mb-3">Debug Mode</h3>
-            <p className="text-sm text-bolt-elements-textSecondary mb-3">
-              Enable debug logging for troubleshooting
-            </p>
+            <p className="text-sm text-bolt-elements-textSecondary mb-3">Enable debug logging for troubleshooting</p>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" />
               <div className="w-11 h-6 bg-bolt-elements-background-depth-3 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-bolt-elements-button-primary-background"></div>
@@ -238,9 +237,7 @@ function AdvancedSettings() {
 
           <div className="p-4 bg-bolt-elements-background-depth-2 rounded-lg">
             <h3 className="font-medium text-bolt-elements-textPrimary mb-3">Clear Cache</h3>
-            <p className="text-sm text-bolt-elements-textSecondary mb-3">
-              Clear application cache and stored data
-            </p>
+            <p className="text-sm text-bolt-elements-textSecondary mb-3">Clear application cache and stored data</p>
             <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
               Clear All Data
             </button>

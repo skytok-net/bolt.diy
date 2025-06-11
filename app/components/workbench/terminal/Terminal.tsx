@@ -25,7 +25,7 @@ export const Terminal = memo(
   forwardRef<TerminalRef, TerminalProps>(
     ({ className, theme, readonly, id, onTerminalReady, onTerminalResize }, ref) => {
       const terminalElementRef = useRef<HTMLDivElement>(null);
-      const terminalRef = useRef<XTerm>();
+      const terminalRef = useRef<XTerm | undefined>(undefined);
 
       useEffect(() => {
         const element = terminalElementRef.current!;

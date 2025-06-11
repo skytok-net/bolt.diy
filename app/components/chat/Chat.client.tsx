@@ -60,7 +60,7 @@ export function Chat() {
       <ToastContainer
         closeButton={({ closeToast }) => {
           return (
-            <button className="Toastify__close-button" onClick={closeToast}>
+            <button className="Toastify__close-button" onClick={closeToast} title="Close notification">
               <div className="i-ph:x text-lg" />
             </button>
           );
@@ -119,7 +119,7 @@ export const ChatImpl = memo(
   ({ description, initialMessages, storeMessageHistory, importChat, exportChat }: ChatProps) => {
     useShortcuts();
 
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null!);
     const [chatStarted, setChatStarted] = useState(initialMessages.length > 0);
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
     const [imageDataList, setImageDataList] = useState<string[]>([]);

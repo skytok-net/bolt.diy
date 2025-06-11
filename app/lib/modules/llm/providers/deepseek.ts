@@ -42,8 +42,6 @@ export default class DeepseekProvider extends BaseProvider {
       apiKey,
     });
 
-    return deepseek(model, {
-      // simulateStreaming: true,
-    });
+    return deepseek(model) as LanguageModelV1;
   }
 }
