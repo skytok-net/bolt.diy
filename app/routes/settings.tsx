@@ -1,8 +1,6 @@
-import { useStore } from '@nanostores/react';
 import { ClientOnly } from 'remix-utils/client-only';
 import { Header } from '~/components/header/Header';
-import { themeStore } from '~/lib/stores/theme';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('general');
@@ -66,6 +64,46 @@ export default function Settings() {
 }
 
 function GeneralSettings() {
+  const [autoSave, setAutoSave] = useState(true);
+  const [showLineNumbers, setShowLineNumbers] = useState(true);
+
+  useEffect(() => {
+    try {
+      const savedAutoSave = localStorage.getItem('bolt_autoSave');
+      const savedLineNumbers = localStorage.getItem('bolt_showLineNumbers');
+
+      if (savedAutoSave !== null) {
+        setAutoSave(savedAutoSave === 'true');
+      }
+
+      if (savedLineNumbers !== null) {
+        setShowLineNumbers(savedLineNumbers === 'true');
+      }
+    } catch (error) {
+      console.warn('Failed to load general settings from localStorage:', error);
+    }
+  }, []);
+
+  const handleAutoSaveChange = (checked: boolean) => {
+    setAutoSave(checked);
+
+    try {
+      localStorage.setItem('bolt_autoSave', checked.toString());
+    } catch (error) {
+      console.warn('Failed to save auto-save setting:', error);
+    }
+  };
+
+  const handleLineNumbersChange = (checked: boolean) => {
+    setShowLineNumbers(checked);
+
+    try {
+      localStorage.setItem('bolt_showLineNumbers', checked.toString());
+    } catch (error) {
+      console.warn('Failed to save line numbers setting:', error);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -77,7 +115,14 @@ function GeneralSettings() {
               <p className="text-sm text-bolt-elements-textSecondary">Automatically save your work as you type</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only peer" defaultChecked />
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={autoSave}
+                onChange={(e) => handleAutoSaveChange(e.target.checked)}
+                aria-label="Auto-save"
+                title="Auto-save"
+              />
               <div className="w-11 h-6 bg-bolt-elements-background-depth-3 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-bolt-elements-button-primary-background"></div>
             </label>
           </div>
@@ -88,7 +133,14 @@ function GeneralSettings() {
               <p className="text-sm text-bolt-elements-textSecondary">Display line numbers in the code editor</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only peer" defaultChecked />
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={showLineNumbers}
+                onChange={(e) => handleLineNumbersChange(e.target.checked)}
+                aria-label="Show line numbers"
+                title="Show line numbers"
+              />
               <div className="w-11 h-6 bg-bolt-elements-background-depth-3 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-bolt-elements-button-primary-background"></div>
             </label>
           </div>
@@ -99,11 +151,45 @@ function GeneralSettings() {
 }
 
 function AppearanceSettings() {
-  const theme = useStore(themeStore);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [fontSize, setFontSize] = useState('14');
+
+  // Initialize settings from localStorage after component mounts
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('bolt_theme') as 'light' | 'dark';
+      const savedFontSize = localStorage.getItem('bolt_fontSize');
+
+      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+        setTheme(savedTheme);
+      }
+
+      if (savedFontSize) {
+        setFontSize(savedFontSize);
+      }
+    } catch (error) {
+      console.warn('Failed to load appearance settings from localStorage:', error);
+    }
+  }, []);
 
   const handleThemeChange = (newTheme: 'light' | 'dark') => {
-    themeStore.set(newTheme);
-    localStorage.setItem('bolt_theme', newTheme);
+    setTheme(newTheme);
+
+    try {
+      localStorage.setItem('bolt_theme', newTheme);
+    } catch (error) {
+      console.warn('Failed to save theme to localStorage:', error);
+    }
+  };
+
+  const handleFontSizeChange = (newFontSize: string) => {
+    setFontSize(newFontSize);
+
+    try {
+      localStorage.setItem('bolt_fontSize', newFontSize);
+    } catch (error) {
+      console.warn('Failed to save font size to localStorage:', error);
+    }
   };
 
   return (
@@ -141,11 +227,18 @@ function AppearanceSettings() {
 
           <div className="p-4 bg-bolt-elements-background-depth-2 rounded-lg">
             <h3 className="font-medium text-bolt-elements-textPrimary mb-3">Font Size</h3>
-            <select className="w-full px-3 py-2 bg-bolt-elements-background-depth-3 border border-bolt-elements-borderColor rounded-lg text-bolt-elements-textPrimary">
+            <label htmlFor="font-size-select" className="sr-only">
+              Font Size
+            </label>
+            <select
+              id="font-size-select"
+              className="w-full px-3 py-2 bg-bolt-elements-background-depth-3 border border-bolt-elements-borderColor rounded-lg text-bolt-elements-textPrimary"
+              title="Font Size"
+              value={fontSize}
+              onChange={(e) => handleFontSizeChange(e.target.value)}
+            >
               <option value="12">12px</option>
-              <option value="14" selected>
-                14px
-              </option>
+              <option value="14">14px</option>
               <option value="16">16px</option>
               <option value="18">18px</option>
             </select>
@@ -194,6 +287,42 @@ function ConnectionsSettings() {
 }
 
 function AdvancedSettings() {
+  const [debugMode, setDebugMode] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedDebugMode = localStorage.getItem('bolt_debugMode');
+
+      if (savedDebugMode !== null) {
+        setDebugMode(savedDebugMode === 'true');
+      }
+    } catch (error) {
+      console.warn('Failed to load debug mode setting from localStorage:', error);
+    }
+  }, []);
+
+  const handleDebugModeChange = (checked: boolean) => {
+    setDebugMode(checked);
+
+    try {
+      localStorage.setItem('bolt_debugMode', checked.toString());
+    } catch (error) {
+      console.warn('Failed to save debug mode setting:', error);
+    }
+  };
+
+  const handleClearCache = () => {
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Optionally reload the page to reflect the cleared state
+      window.location.reload();
+    } catch (error) {
+      console.warn('Failed to clear cache:', error);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -230,7 +359,14 @@ function AdvancedSettings() {
             <h3 className="font-medium text-bolt-elements-textPrimary mb-3">Debug Mode</h3>
             <p className="text-sm text-bolt-elements-textSecondary mb-3">Enable debug logging for troubleshooting</p>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only peer" />
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={debugMode}
+                onChange={(e) => handleDebugModeChange(e.target.checked)}
+                aria-label="Enable debug mode"
+                title="Enable debug mode"
+              />
               <div className="w-11 h-6 bg-bolt-elements-background-depth-3 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-bolt-elements-button-primary-background"></div>
             </label>
           </div>
@@ -238,7 +374,10 @@ function AdvancedSettings() {
           <div className="p-4 bg-bolt-elements-background-depth-2 rounded-lg">
             <h3 className="font-medium text-bolt-elements-textPrimary mb-3">Clear Cache</h3>
             <p className="text-sm text-bolt-elements-textSecondary mb-3">Clear application cache and stored data</p>
-            <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            <button
+              onClick={handleClearCache}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
               Clear All Data
             </button>
           </div>
