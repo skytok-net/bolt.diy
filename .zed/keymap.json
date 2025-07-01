@@ -1,0 +1,136 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      // Debug shortcuts
+      "f5": "debugger::Start",
+      "shift-f5": "debugger::Stop",
+      "ctrl-shift-f5": "debugger::Restart",
+      "f9": "debugger::ToggleBreakpoint",
+      "f10": "debugger::StepOver",
+      "f11": "debugger::StepInto",
+      "shift-f11": "debugger::StepOut",
+      "ctrl-f5": "debugger::Continue",
+
+      // Task shortcuts
+      "ctrl-shift-p": "command_palette::Toggle",
+      "ctrl-shift-t": "task::Spawn",
+      "ctrl-`": "terminal_panel::ToggleFocus",
+      "ctrl-shift-`": "terminal_panel::NewTerminal",
+
+      // Development shortcuts
+      "ctrl-shift-b": ["task::Spawn", { "task_name": "pnpm: build" }],
+      "ctrl-shift-d": ["task::Spawn", { "task_name": "pnpm: dev" }],
+      "ctrl-shift-r": ["task::Spawn", { "task_name": "pnpm: test" }],
+      "ctrl-shift-l": ["task::Spawn", { "task_name": "pnpm: lint" }],
+      "ctrl-shift-k": ["task::Spawn", { "task_name": "pnpm: typecheck" }],
+
+      // Debug helper shortcuts
+      "ctrl-alt-h": ["task::Spawn", { "task_name": "Debug Helper: Health Check" }],
+      "ctrl-alt-e": ["task::Spawn", { "task_name": "Debug Helper: Environment Info" }],
+      "ctrl-alt-c": ["task::Spawn", { "task_name": "Debug Helper: Clean Artifacts" }],
+      "ctrl-alt-k": ["task::Spawn", { "task_name": "Debug Helper: Kill Processes" }],
+
+      // File operations
+      "ctrl-s": "workspace::Save",
+      "ctrl-shift-s": "workspace::SaveAll",
+      "ctrl-o": "file_finder::Toggle",
+      "ctrl-shift-o": "outline::Toggle",
+      "ctrl-p": "file_finder::Toggle",
+      "ctrl-shift-f": "search::ToggleReplace",
+      "ctrl-f": "buffer_search::Deploy",
+
+      // Navigation
+      "ctrl-g": "go_to_line::Toggle",
+      "ctrl-shift-g": "project_symbols::Toggle",
+      "ctrl-t": "project_symbols::Toggle",
+      "f12": "editor::GoToDefinition",
+      "shift-f12": "editor::GoToReferences",
+      "ctrl-f12": "editor::GoToImplementation",
+      "alt-f12": "editor::GoToTypeDefinition",
+
+      // Code actions
+      "ctrl-.": "editor::ToggleCodeActions",
+      "f2": "editor::Rename",
+      "shift-alt-f": "editor::Format",
+      "ctrl-shift-i": "editor::ToggleInlayHints",
+
+      // Panel toggles
+      "ctrl-shift-e": "workspace::ToggleLeftDock",
+      "ctrl-shift-x": "extensions::Toggle",
+      "ctrl-j": "workspace::ToggleBottomDock",
+
+      // Git shortcuts
+      "ctrl-shift-g": "git_panel::Toggle",
+      "ctrl-k ctrl-c": "git::OpenRepository",
+
+      // Window management
+      "ctrl-w": "pane::CloseActiveItem",
+      "ctrl-shift-w": "workspace::CloseWindow",
+      "ctrl-n": "workspace::NewFile",
+      "ctrl-shift-n": "workspace::NewWindow",
+
+      // Zoom
+      "ctrl-=": "zed::IncreaseBufferFontSize",
+      "ctrl--": "zed::DecreaseBufferFontSize",
+      "ctrl-0": "zed::ResetBufferFontSize"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      // Terminal-specific shortcuts
+      "ctrl-c": "terminal::Copy",
+      "ctrl-v": "terminal::Paste",
+      "ctrl-shift-c": "terminal::Copy",
+      "ctrl-shift-v": "terminal::Paste",
+      "ctrl-`": "terminal_panel::ToggleFocus",
+      "ctrl-shift-`": "terminal_panel::NewTerminal"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      // Project panel shortcuts
+      "enter": "project_panel::Open",
+      "space": "project_panel::ToggleExpanded",
+      "delete": "project_panel::Delete",
+      "f2": "project_panel::Rename",
+      "ctrl-c": "project_panel::Copy",
+      "ctrl-x": "project_panel::Cut",
+      "ctrl-v": "project_panel::Paste"
+    }
+  },
+  {
+    "context": "Debugger",
+    "bindings": {
+      // Debugger panel shortcuts
+      "f5": "debugger::Continue",
+      "f9": "debugger::ToggleBreakpoint",
+      "f10": "debugger::StepOver",
+      "f11": "debugger::StepInto",
+      "shift-f11": "debugger::StepOut",
+      "shift-f5": "debugger::Stop",
+      "ctrl-shift-f5": "debugger::Restart"
+    }
+  },
+  {
+    "context": "Search",
+    "bindings": {
+      // Search shortcuts
+      "enter": "search::SelectNextMatch",
+      "shift-enter": "search::SelectPrevMatch",
+      "ctrl-enter": "search::SelectAllMatches",
+      "escape": "search::Dismiss"
+    }
+  },
+  {
+    "context": "FileFinder",
+    "bindings": {
+      // File finder shortcuts
+      "enter": "file_finder::Open",
+      "ctrl-enter": "file_finder::OpenInNewPane",
+      "escape": "file_finder::Dismiss"
+    }
+  }
+]

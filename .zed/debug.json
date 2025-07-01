@@ -1,0 +1,207 @@
+[
+  {
+    "name": "Debug Remix Dev Server",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/remix",
+    "args": ["vite:dev"],
+    "env": {
+      "NODE_ENV": "development",
+      "DEBUG": "*"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true,
+    "restart": true,
+    "runtimeArgs": ["--enable-source-maps"],
+    "preLaunchTask": "pnpm: pre-start"
+  },
+  {
+    "name": "Debug Vite Dev Server",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/vite",
+    "args": ["--mode", "development"],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true,
+    "restart": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug Vitest Tests",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/vitest",
+    "args": ["run", "--reporter=verbose"],
+    "env": {
+      "NODE_ENV": "test"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug Vitest Watch Mode",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/vitest",
+    "args": ["--watch"],
+    "env": {
+      "NODE_ENV": "test"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true,
+    "restart": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug Wrangler Pages Dev",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/wrangler",
+    "args": ["pages", "dev", "./build/client", "--ip", "0.0.0.0", "--port", "5173"],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true,
+    "restart": true,
+    "runtimeArgs": ["--enable-source-maps"],
+    "preLaunchTask": "pnpm: build"
+  },
+  {
+    "name": "Debug Electron Main Process",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/electron",
+    "args": ["${workspaceFolder}/dist/main/main.js"],
+    "env": {
+      "NODE_ENV": "development",
+      "ELECTRON_IS_DEV": "1"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true,
+    "restart": true,
+    "runtimeArgs": ["--enable-source-maps"],
+    "preLaunchTask": "pnpm: electron:build:deps"
+  },
+  {
+    "name": "Debug TypeScript Check",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/tsc",
+    "args": ["--noEmit", "--incremental"],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug ESLint",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/eslint",
+    "args": ["--cache", "--cache-location", "./node_modules/.cache/eslint", "app"],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug Build Process",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/node_modules/.bin/remix",
+    "args": ["vite:build"],
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug Pre-start Script",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/pre-start.cjs",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug Clean Script",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/scripts/clean.js",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Debug Helper Script",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceFolder}/scripts/debug/debug-helper.js",
+    "args": ["health"],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  },
+  {
+    "name": "Attach to Node Process",
+    "type": "node",
+    "request": "attach",
+    "port": 9229,
+    "skipFiles": ["<node_internals>/**"],
+    "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+    "sourceMaps": true
+  },
+  {
+    "name": "Debug Current File",
+    "type": "node",
+    "request": "launch",
+    "program": "${file}",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "console": "integratedTerminal",
+    "skipFiles": ["<node_internals>/**"],
+    "sourceMaps": true,
+    "runtimeArgs": ["--enable-source-maps"]
+  }
+]

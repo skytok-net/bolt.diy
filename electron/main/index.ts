@@ -216,7 +216,7 @@ declare global {
 
         return `http://localhost:${listen.config.server.port}`;
       })()
-    : `http://localhost:${DEFAULT_PORT}`);
+    : `http://localhost:${DEFAULT_PORT}/`);
 
   console.log('Using renderer URL:', rendererURL);
 

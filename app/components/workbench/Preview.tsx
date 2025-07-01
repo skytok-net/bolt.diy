@@ -817,6 +817,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
                           className={`w-10 h-5 rounded-full transition-colors duration-200 ${
                             showDeviceFrame ? 'bg-[#6D28D9]' : 'bg-gray-300 dark:bg-gray-700'
                           } relative`}
+                          aria-label={showDeviceFrame ? 'Hide device frame' : 'Show device frame'}
                           onClick={(e) => {
                             e.stopPropagation();
                             setShowDeviceFrame(!showDeviceFrame);
@@ -835,6 +836,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
                           className={`w-10 h-5 rounded-full transition-colors duration-200 ${
                             isLandscape ? 'bg-[#6D28D9]' : 'bg-gray-300 dark:bg-gray-700'
                           } relative`}
+                          aria-label={isLandscape ? 'Disable landscape mode' : 'Enable landscape mode'}
                           onClick={(e) => {
                             e.stopPropagation();
                             setIsLandscape(!isLandscape);

@@ -1,0 +1,443 @@
+[
+  {
+    "label": "pnpm: install",
+    "command": "pnpm",
+    "args": ["install"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "pnpm: pre-start",
+    "command": "node",
+    "args": ["pre-start.cjs"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "silent"
+  },
+  {
+    "label": "pnpm: dev",
+    "command": "pnpm",
+    "args": ["run", "dev"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["development"]
+  },
+  {
+    "label": "pnpm: build",
+    "command": "pnpm",
+    "args": ["run", "build"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["build"]
+  },
+  {
+    "label": "pnpm: test",
+    "command": "pnpm",
+    "args": ["run", "test"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {
+      "NODE_ENV": "test"
+    },
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["test"]
+  },
+  {
+    "label": "pnpm: test:watch",
+    "command": "pnpm",
+    "args": ["run", "test:watch"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {
+      "NODE_ENV": "test"
+    },
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["test"]
+  },
+  {
+    "label": "pnpm: typecheck",
+    "command": "pnpm",
+    "args": ["run", "typecheck"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["typecheck"]
+  },
+  {
+    "label": "pnpm: lint",
+    "command": "pnpm",
+    "args": ["run", "lint"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["lint"]
+  },
+  {
+    "label": "pnpm: lint:fix",
+    "command": "pnpm",
+    "args": ["run", "lint:fix"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["lint"]
+  },
+  {
+    "label": "pnpm: start",
+    "command": "pnpm",
+    "args": ["run", "start"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["production"]
+  },
+  {
+    "label": "pnpm: preview",
+    "command": "pnpm",
+    "args": ["run", "preview"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["preview"]
+  },
+  {
+    "label": "pnpm: clean",
+    "command": "pnpm",
+    "args": ["run", "clean"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["clean"]
+  },
+  {
+    "label": "pnpm: deploy",
+    "command": "pnpm",
+    "args": ["run", "deploy"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["deploy"]
+  },
+  {
+    "label": "pnpm: electron:build:deps",
+    "command": "pnpm",
+    "args": ["run", "electron:build:deps"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["electron", "build"]
+  },
+  {
+    "label": "pnpm: electron:build:renderer",
+    "command": "pnpm",
+    "args": ["run", "electron:build:renderer"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["electron", "build"]
+  },
+  {
+    "label": "pnpm: electron:build:unpack",
+    "command": "pnpm",
+    "args": ["run", "electron:build:unpack"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["electron", "build"]
+  },
+  {
+    "label": "pnpm: electron:build:mac",
+    "command": "pnpm",
+    "args": ["run", "electron:build:mac"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["electron", "build", "mac"]
+  },
+  {
+    "label": "pnpm: electron:build:win",
+    "command": "pnpm",
+    "args": ["run", "electron:build:win"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["electron", "build", "windows"]
+  },
+  {
+    "label": "pnpm: electron:build:linux",
+    "command": "pnpm",
+    "args": ["run", "electron:build:linux"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["electron", "build", "linux"]
+  },
+  {
+    "label": "Debug Helper: Health Check",
+    "command": "pnpm",
+    "args": ["run", "debug:health"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["debug", "health"]
+  },
+  {
+    "label": "Debug Helper: Environment Info",
+    "command": "pnpm",
+    "args": ["run", "debug:env"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["debug", "environment"]
+  },
+  {
+    "label": "Debug Helper: Show Configs",
+    "command": "pnpm",
+    "args": ["run", "debug:configs"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["debug", "config"]
+  },
+  {
+    "label": "Debug Helper: Kill Processes",
+    "command": "pnpm",
+    "args": ["run", "debug:kill"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["debug", "kill"]
+  },
+  {
+    "label": "Debug Helper: Clean Artifacts",
+    "command": "pnpm",
+    "args": ["run", "debug:clean"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["debug", "clean"]
+  },
+  {
+    "label": "Debug Helper: Start with Debug",
+    "command": "pnpm",
+    "args": ["run", "debug:start"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {
+      "NODE_ENV": "development",
+      "DEBUG": "*"
+    },
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["debug", "start"]
+  },
+  {
+    "label": "Docker: Build Development",
+    "command": "docker",
+    "args": ["build", ".", "--target", "bolt-ai-development", "-t", "bolt-ai:development"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["docker", "build"]
+  },
+  {
+    "label": "Docker: Build Production",
+    "command": "docker",
+    "args": ["build", ".", "--target", "bolt-ai-production", "-t", "bolt-ai:production"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["docker", "build"]
+  },
+  {
+    "label": "Docker: Run Development",
+    "command": "docker",
+    "args": ["run", "-it", "--rm", "-p", "5173:5173", "--env-file", ".env.local", "bolt-ai:development"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["docker", "run"]
+  },
+  {
+    "label": "Docker: Compose Up",
+    "command": "docker",
+    "args": ["compose", "--profile", "development", "up"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["docker", "compose"]
+  },
+  {
+    "label": "Git: Status",
+    "command": "git",
+    "args": ["status", "--porcelain"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": true,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["git"]
+  },
+  {
+    "label": "Git: Pull",
+    "command": "git",
+    "args": ["pull"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["git"]
+  },
+  {
+    "label": "Git: Push",
+    "command": "git",
+    "args": ["push"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["git"]
+  },
+  {
+    "label": "Wrangler: Types",
+    "command": "pnpm",
+    "args": ["run", "typegen"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["wrangler", "types"]
+  },
+  {
+    "label": "Kill Port 5173",
+    "command": "sh",
+    "args": ["-c", "lsof -ti:5173 | xargs kill -9 2>/dev/null || echo 'No process found on port 5173'"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["utility", "kill"]
+  },
+  {
+    "label": "Kill Port 9229 (Debug)",
+    "command": "sh",
+    "args": ["-c", "lsof -ti:9229 | xargs kill -9 2>/dev/null || echo 'No process found on port 9229'"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide_in_menu": false,
+    "tags": ["utility", "kill", "debug"]
+  },
+  {
+    "label": "Open in Browser",
+    "command": "open",
+    "args": ["http://localhost:5173"],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": true,
+    "reveal": "silent",
+    "hide_in_menu": false,
+    "tags": ["utility", "browser"]
+  }
+]

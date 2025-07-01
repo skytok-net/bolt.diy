@@ -25,6 +25,7 @@
     "paths": {
       "~/*": ["./app/*"]
     },
+
     // vite takes care of building everything, not tsc
     "noEmit": true
   },
@@ -37,7 +38,5 @@
     "**/.client/**/*.tsx",
     "app/types/jsx.d.ts"
   ],
-  "exclude": [
-    "examples"
-  ]
+  "exclude": ["examples"]
 }

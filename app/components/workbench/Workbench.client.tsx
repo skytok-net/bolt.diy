@@ -389,6 +389,7 @@ export const Workbench = memo(
                   <button
                     className={`${showChat ? 'i-ph:sidebar-simple-fill' : 'i-ph:sidebar-simple'} text-lg text-bolt-elements-textSecondary mr-1`}
                     disabled={!canHideChat || isSmallViewport}
+                    aria-label={showChat ? 'Hide chat sidebar' : 'Show chat sidebar'}
                     onClick={() => {
                       if (canHideChat) {
                         chatStore.setKey('showChat', !showChat);

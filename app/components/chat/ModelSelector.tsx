@@ -36,6 +36,33 @@ export const ModelSelector = ({
   const providerSearchInputRef = useRef<HTMLInputElement>(null);
   const providerOptionsRef = useRef<(HTMLDivElement | null)[]>([]);
   const providerDropdownRef = useRef<HTMLDivElement>(null);
+  const providerComboboxRef = useRef<HTMLDivElement>(null);
+  const modelComboboxRef = useRef<HTMLDivElement>(null);
+  const providerOptionRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const modelOptionRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  // Update ARIA attributes directly to avoid JSX validation issues
+  useEffect(() => {
+    if (providerComboboxRef.current) {
+      providerComboboxRef.current.setAttribute('aria-expanded', isProviderDropdownOpen ? 'true' : 'false');
+    }
+
+    // Update aria-selected for provider options
+    providerOptionRefs.current.forEach((element, name) => {
+      element.setAttribute('aria-selected', provider?.name === name ? 'true' : 'false');
+    });
+  }, [isProviderDropdownOpen, provider?.name]);
+
+  useEffect(() => {
+    if (modelComboboxRef.current) {
+      modelComboboxRef.current.setAttribute('aria-expanded', isModelDropdownOpen ? 'true' : 'false');
+    }
+
+    // Update aria-selected for model options
+    modelOptionRefs.current.forEach((element, name) => {
+      element.setAttribute('aria-selected', model === name ? 'true' : 'false');
+    });
+  }, [isModelDropdownOpen, model]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -220,6 +247,7 @@ export const ModelSelector = ({
       {/* Provider Combobox */}
       <div className="relative flex w-full" onKeyDown={handleProviderKeyDown} ref={providerDropdownRef}>
         <div
+          ref={providerComboboxRef}
           className={classNames(
             'w-full p-2 rounded-lg border border-bolt-elements-borderColor',
             'bg-bolt-elements-prompt-background text-bolt-elements-textPrimary',
@@ -235,7 +263,7 @@ export const ModelSelector = ({
             }
           }}
           role="combobox"
-          aria-expanded={isProviderDropdownOpen}
+          aria-expanded="false"
           aria-controls="provider-listbox"
           aria-haspopup="listbox"
           tabIndex={0}
@@ -247,16 +275,13 @@ export const ModelSelector = ({
                 'i-ph:caret-down w-4 h-4 text-bolt-elements-textSecondary opacity-75',
                 isProviderDropdownOpen ? 'rotate-180' : undefined,
               )}
+              aria-hidden="true"
             />
           </div>
         </div>
 
         {isProviderDropdownOpen && (
-          <div
-            className="absolute z-20 w-full mt-1 py-1 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-background-depth-2 shadow-lg"
-            role="listbox"
-            id="provider-listbox"
-          >
+          <div className="absolute z-20 w-full mt-1 py-1 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-background-depth-2 shadow-lg">
             <div className="px-2 pb-2">
               <div className="relative">
                 <input
@@ -266,23 +291,24 @@ export const ModelSelector = ({
                   onChange={(e) => setProviderSearchQuery(e.target.value)}
                   placeholder="Search providers..."
                   className={classNames(
-                    'w-full pl-2 py-1.5 rounded-md text-sm',
+                    'w-full pl-8 py-1.5 rounded-md text-sm',
                     'bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor',
                     'text-bolt-elements-textPrimary placeholder:text-bolt-elements-textTertiary',
                     'focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus',
                     'transition-all',
                   )}
                   onClick={(e) => e.stopPropagation()}
-                  role="searchbox"
                   aria-label="Search providers"
                 />
-                <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
+                <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
                   <span className="i-ph:magnifying-glass text-bolt-elements-textTertiary" />
                 </div>
               </div>
             </div>
 
             <div
+              role="listbox"
+              id="provider-listbox"
               className={classNames(
                 'max-h-60 overflow-y-auto',
                 'sm:scrollbar-none',
@@ -305,10 +331,14 @@ export const ModelSelector = ({
                   <div
                     ref={(el) => {
                       providerOptionsRef.current[index] = el;
+
+                      if (el) {
+                        providerOptionRefs.current.set(providerOption.name, el);
+                        el.setAttribute('aria-selected', provider?.name === providerOption.name ? 'true' : 'false');
+                      }
                     }}
                     key={providerOption.name}
                     role="option"
-                    aria-selected={provider?.name === providerOption.name}
                     className={classNames(
                       'px-3 py-2 text-sm cursor-pointer',
                       'hover:bg-bolt-elements-background-depth-3',
@@ -324,18 +354,8 @@ export const ModelSelector = ({
 
                       if (setProvider) {
                         setProvider(providerOption);
-
-                        const firstModel = modelList.find((m) => m.provider === providerOption.name);
-
-                        if (firstModel && setModel) {
-                          setModel(firstModel.name);
-                        }
                       }
-
-                      setIsProviderDropdownOpen(false);
-                      setProviderSearchQuery('');
                     }}
-                    tabIndex={focusedProviderIndex === index ? 0 : -1}
                   >
                     {providerOption.name}
                   </div>
@@ -349,6 +369,7 @@ export const ModelSelector = ({
       {/* Model Combobox */}
       <div className="relative flex w-full min-w-[70%]" onKeyDown={handleModelKeyDown} ref={modelDropdownRef}>
         <div
+          ref={modelComboboxRef}
           className={classNames(
             'w-full p-2 rounded-lg border border-bolt-elements-borderColor',
             'bg-bolt-elements-prompt-background text-bolt-elements-textPrimary',
@@ -364,7 +385,7 @@ export const ModelSelector = ({
             }
           }}
           role="combobox"
-          aria-expanded={isModelDropdownOpen}
+          aria-expanded="false"
           aria-controls="model-listbox"
           aria-haspopup="listbox"
           tabIndex={0}
@@ -376,16 +397,13 @@ export const ModelSelector = ({
                 'i-ph:caret-down w-4 h-4 text-bolt-elements-textSecondary opacity-75',
                 isModelDropdownOpen ? 'rotate-180' : undefined,
               )}
+              aria-hidden="true"
             />
           </div>
         </div>
 
         {isModelDropdownOpen && (
-          <div
-            className="absolute z-10 w-full mt-1 py-1 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-background-depth-2 shadow-lg"
-            role="listbox"
-            id="model-listbox"
-          >
+          <div className="absolute z-20 w-full mt-1 py-1 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-background-depth-2 shadow-lg">
             <div className="px-2 pb-2">
               <div className="relative">
                 <input
@@ -395,23 +413,24 @@ export const ModelSelector = ({
                   onChange={(e) => setModelSearchQuery(e.target.value)}
                   placeholder="Search models..."
                   className={classNames(
-                    'w-full pl-2 py-1.5 rounded-md text-sm',
+                    'w-full pl-8 py-1.5 rounded-md text-sm',
                     'bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor',
                     'text-bolt-elements-textPrimary placeholder:text-bolt-elements-textTertiary',
                     'focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus',
                     'transition-all',
                   )}
                   onClick={(e) => e.stopPropagation()}
-                  role="searchbox"
                   aria-label="Search models"
                 />
-                <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
+                <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
                   <span className="i-ph:magnifying-glass text-bolt-elements-textTertiary" />
                 </div>
               </div>
             </div>
 
             <div
+              role="listbox"
+              id="model-listbox"
               className={classNames(
                 'max-h-60 overflow-y-auto',
                 'sm:scrollbar-none',
@@ -436,10 +455,14 @@ export const ModelSelector = ({
                   <div
                     ref={(el) => {
                       modelOptionsRef.current[index] = el;
+
+                      if (el) {
+                        modelOptionRefs.current.set(modelOption.name, el);
+                        el.setAttribute('aria-selected', model === modelOption.name ? 'true' : 'false');
+                      }
                     }}
-                    key={index} // Consider using modelOption.name if unique
+                    key={modelOption.name}
                     role="option"
-                    aria-selected={model === modelOption.name}
                     className={classNames(
                       'px-3 py-2 text-sm cursor-pointer',
                       'hover:bg-bolt-elements-background-depth-3',

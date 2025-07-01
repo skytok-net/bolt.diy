@@ -87,7 +87,11 @@ export function HistoryItem({
 
       {editing ? (
         <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-2">
+          <label htmlFor="history-item-description" className="sr-only">
+            Edit chat description
+          </label>
           <input
+            id="history-item-description"
             type="text"
             className="flex-1 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-md px-3 py-1.5 text-sm border border-gray-200 dark:border-gray-800 focus:outline-none focus:ring-1 focus:ring-prometheus-yellow/50"
             autoFocus
@@ -95,10 +99,12 @@ export function HistoryItem({
             onChange={handleChange}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
+            aria-label="Edit chat description"
           />
           <button
             type="submit"
             className="i-ph:check h-4 w-4 text-gray-500 hover:text-prometheus-yellow transition-colors"
+            aria-label="Save description"
             onMouseDown={handleSubmit}
           />
         </form>
@@ -164,6 +170,7 @@ const ChatActionButton = forwardRef(
       icon,
       className,
       onClick,
+      btnTitle,
     }: {
       toolTipContent: string;
       icon: string;
@@ -179,6 +186,7 @@ const ChatActionButton = forwardRef(
           ref={ref}
           type="button"
           className={`text-gray-400 dark:text-gray-500 hover:text-prometheus-yellow dark:hover:text-prometheus-yellow transition-colors ${icon} ${className ? className : ''}`}
+          aria-label={btnTitle || toolTipContent}
           onClick={onClick}
         />
       </WithTooltip>

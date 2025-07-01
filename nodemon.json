@@ -1,0 +1,42 @@
+{
+  "watch": [
+    "app/**/*",
+    "load-context.ts",
+    "vite.config.ts",
+    "tsconfig.json",
+    ".env*"
+  ],
+  "ext": "ts,tsx,js,jsx,json,mjs,cjs",
+  "ignore": [
+    "node_modules/**/*",
+    "build/**/*",
+    "dist/**/*",
+    ".wrangler/**/*",
+    ".cache/**/*",
+    "coverage/**/*",
+    ".nyc_output/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.d.ts"
+  ],
+  "exec": "remix vite:dev",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": 1000,
+  "verbose": true,
+  "restartable": "rs",
+  "colours": true,
+  "legacyWatch": false,
+  "pollingInterval": 100,
+  "runOnChangeOnly": false,
+  "signal": "SIGTERM",
+  "stdout": true,
+  "events": {
+    "start": "echo 'Starting bolt.diy development server...'",
+    "crash": "echo 'bolt.diy server crashed - waiting for file changes before restart'",
+    "restart": "echo 'bolt.diy server restarted due to file changes'"
+  }
+}
