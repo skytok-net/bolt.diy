@@ -215,6 +215,25 @@ export const ChatImpl = memo(
     useEffect(() => {
       const prompt = searchParams.get('prompt');
       const templateUrl = searchParams.get('template');
+      const modelParam = searchParams.get('model');
+
+      // Handle model parameter
+      if (modelParam && modelParam !== model) {
+        // Find the provider for this model by checking all providers
+        const allModels = PROVIDER_LIST.flatMap((p) => p.staticModels || []);
+        const modelInfo = allModels.find((m) => m.name === modelParam || m.label === modelParam);
+
+        if (modelInfo) {
+          const modelProvider = PROVIDER_LIST.find((p) => p.name === modelInfo.provider);
+
+          if (modelProvider) {
+            setModel(modelInfo.name);
+            setProvider(modelProvider as ProviderInfo);
+            Cookies.set('selectedModel', modelInfo.name, { expires: 30 });
+            Cookies.set('selectedProvider', modelProvider.name, { expires: 30 });
+          }
+        }
+      }
 
       // console.log(prompt, searchParams, model, provider);
 

@@ -18,7 +18,7 @@ export class ProviderStatusCheckerFactory {
   private static _providerConfigs: Record<ProviderName, ProviderConfig> = {
     AmazonBedrock: {
       statusUrl: 'https://health.aws.amazon.com/health/status',
-      apiUrl: 'https://bedrock.us-east-1.amazonaws.com/models',
+      apiUrl: 'https://bedrock.us-east-2.amazonaws.com/models',
       headers: {},
       testModel: 'anthropic.claude-sonnet-4-20250514-v1:0',
     },
