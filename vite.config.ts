@@ -48,6 +48,7 @@ const getPackageJson = () => {
 
     return {
       name: pkg.name,
+      version: pkg.version,
       description: pkg.description,
       license: pkg.license,
       dependencies: pkg.dependencies || {},
@@ -58,6 +59,7 @@ const getPackageJson = () => {
   } catch {
     return {
       name: 'bolt.diy',
+      version: '1.0.0',
       description: 'A DIY LLM interface',
       license: 'MIT',
       dependencies: {},
@@ -81,7 +83,7 @@ export default defineConfig((config) => {
       __GIT_EMAIL: JSON.stringify(gitInfo.email),
       __GIT_REMOTE_URL: JSON.stringify(gitInfo.remoteUrl),
       __GIT_REPO_NAME: JSON.stringify(gitInfo.repoName),
-      __APP_VERSION: JSON.stringify(process.env.npm_package_version),
+      __APP_VERSION: JSON.stringify(pkg.version),
       __PKG_NAME: JSON.stringify(pkg.name),
       __PKG_DESCRIPTION: JSON.stringify(pkg.description),
       __PKG_LICENSE: JSON.stringify(pkg.license),

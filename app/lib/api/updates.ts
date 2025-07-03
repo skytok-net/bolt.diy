@@ -36,20 +36,12 @@ function compareVersions(v1: string, v2: string): number {
 
 export const checkForUpdates = async (): Promise<UpdateCheckResult> => {
   try {
-    // Get the current version from local package.json
-    const packageResponse = await fetch('/package.json');
+    // Get the current version from build-time constants (embedded during build)
+    const currentVersion = __APP_VERSION;
 
-    if (!packageResponse.ok) {
-      throw new Error('Failed to fetch local package.json');
+    if (!currentVersion || typeof currentVersion !== 'string') {
+      throw new Error('Application version not available');
     }
-
-    const packageData = (await packageResponse.json()) as PackageJson;
-
-    if (!packageData.version || typeof packageData.version !== 'string') {
-      throw new Error('Invalid package.json format: missing or invalid version');
-    }
-
-    const currentVersion = packageData.version;
 
     /*
      * Get the latest version from GitHub's main branch package.json
