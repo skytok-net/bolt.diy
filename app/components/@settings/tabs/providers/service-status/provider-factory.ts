@@ -20,7 +20,7 @@ export class ProviderStatusCheckerFactory {
       statusUrl: 'https://health.aws.amazon.com/health/status',
       apiUrl: 'https://bedrock.us-east-1.amazonaws.com/models',
       headers: {},
-      testModel: 'anthropic.claude-3-sonnet-20240229-v1:0',
+      testModel: 'anthropic.claude-sonnet-4-20250514-v1:0',
     },
     Cohere: {
       statusUrl: 'https://status.cohere.com/',

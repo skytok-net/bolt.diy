@@ -17,6 +17,11 @@ export class AmazonBedrockStatusChecker extends BaseProviderChecker {
 
       const hasGeneralIssues = text.includes('Service disruption') || text.includes('Multiple services affected');
 
+      // Check for Claude 4 specific mentions
+      const hasClaude4Issues = text.includes('Claude 4') || text.includes('Anthropic Claude 4');
+      const hasAnthropicIssues =
+        text.includes('Anthropic') && (text.includes('Service disruption') || text.includes('Degraded Service'));
+
       // Extract incidents
       const incidents: string[] = [];
       const incidentMatches = text.matchAll(/(\d{4}-\d{2}-\d{2})\s+(.*?)\s+Impact:(.*?)(?=\n|$)/g);
@@ -24,7 +29,12 @@ export class AmazonBedrockStatusChecker extends BaseProviderChecker {
       for (const match of incidentMatches) {
         const [, date, title, impact] = match;
 
-        if (title.includes('Bedrock') || title.includes('AWS')) {
+        if (
+          title.includes('Bedrock') ||
+          title.includes('AWS') ||
+          title.includes('Claude') ||
+          title.includes('Anthropic')
+        ) {
           incidents.push(`${date}: ${title.trim()} - Impact: ${impact.trim()}`);
         }
       }
@@ -35,6 +45,9 @@ export class AmazonBedrockStatusChecker extends BaseProviderChecker {
       if (hasBedrockIssues) {
         status = 'degraded';
         message = 'Amazon Bedrock service issues reported';
+      } else if (hasClaude4Issues || hasAnthropicIssues) {
+        status = 'degraded';
+        message = 'Claude 4 or Anthropic service issues reported';
       } else if (hasGeneralIssues) {
         status = 'degraded';
         message = 'AWS experiencing general issues';
