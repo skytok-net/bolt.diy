@@ -130,7 +130,7 @@ export const STARTER_TEMPLATES: Template[] = [
     icon: 'i-bolt:angular',
   },
   {
-    name: 'Prometheus AI',
+    name: 'prometheus',
     label: 'Prometheus AI',
     description: 'Advanced AI-powered application template with modern tooling and best practices',
     githubRepo: 'Prometheus-AGS/prometheus-bolt-template',
