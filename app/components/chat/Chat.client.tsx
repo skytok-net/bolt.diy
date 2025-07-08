@@ -29,6 +29,7 @@ import { filesToArtifacts } from '~/utils/fileUtils';
 import { supabaseConnection } from '~/lib/stores/supabase';
 import { defaultDesignScheme, type DesignScheme } from '~/types/design-scheme';
 import type { ElementInfo } from '~/components/workbench/Inspector';
+import type { LlmErrorAlertType } from '~/types/actions';
 
 const toastAnimation = cssTransition({
   enter: 'animated fadeInRight',
@@ -134,12 +135,13 @@ export const ChatImpl = memo(
     const [templateLoadComplete, setTemplateLoadComplete] = useState(false);
     const actionAlert = useStore(workbenchStore.alert);
     const deployAlert = useStore(workbenchStore.deployAlert);
-    const supabaseConn = useStore(supabaseConnection); // Add this line to get Supabase connection
+    const supabaseConn = useStore(supabaseConnection);
     const selectedProject = supabaseConn.stats?.projects?.find(
       (project) => project.id === supabaseConn.selectedProjectId,
     );
     const supabaseAlert = useStore(workbenchStore.supabaseAlert);
     const { activeProviders, promptId, autoSelectTemplate, contextOptimizationEnabled } = useSettings();
+    const [llmErrorAlert, setLlmErrorAlert] = useState<LlmErrorAlertType | undefined>(undefined);
     const [model, setModel] = useState(() => {
       const savedModel = Cookies.get('selectedModel');
       return savedModel || DEFAULT_MODEL;
@@ -444,6 +446,10 @@ export const ChatImpl = memo(
       });
     };
 
+    const clearApiErrorAlert = useCallback(() => {
+      setLlmErrorAlert(undefined);
+    }, []);
+
     useEffect(() => {
       const textarea = textareaRef.current;
 
@@ -743,6 +749,8 @@ export const ChatImpl = memo(
         clearSupabaseAlert={() => workbenchStore.clearSupabaseAlert()}
         deployAlert={deployAlert}
         clearDeployAlert={() => workbenchStore.clearDeployAlert()}
+        llmErrorAlert={llmErrorAlert}
+        clearLlmErrorAlert={clearApiErrorAlert}
         data={chatData}
         chatMode={chatMode}
         setChatMode={setChatMode}

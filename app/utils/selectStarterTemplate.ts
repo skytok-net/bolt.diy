@@ -61,7 +61,7 @@ Instructions:
 6. If no perfect match exists, recommend the closest option
 
 Important: Provide only the selection tags in your response, no additional text.
-MOST IMPORTANT: YOU DONT HAVE TIME TO THINK JUST START RESPONDING BASED ON HUNCH 
+MOST IMPORTANT: YOU DONT HAVE TIME TO THINK JUST START RESPONDING BASED ON HUNCH
 `;
 
 const templates: Template[] = STARTER_TEMPLATES.filter((t) => !t.name.includes('shadcn'));
@@ -135,7 +135,17 @@ const getGitHubRepoContent = async (repoName: string): Promise<{ name: string; p
 export async function getTemplates(templateName: string, title?: string) {
   const template = STARTER_TEMPLATES.find((t) => t.name == templateName);
 
+  console.log('🔍 Template Debug: Looking for template', {
+    requestedName: templateName,
+    foundTemplate: template?.name || 'NOT FOUND',
+    availableTemplates: STARTER_TEMPLATES.map((t) => t.name),
+  });
+
   if (!template) {
+    console.error('❌ Template Debug: Template not found!', {
+      requestedName: templateName,
+      availableNames: STARTER_TEMPLATES.map((t) => t.name),
+    });
     return null;
   }
 
