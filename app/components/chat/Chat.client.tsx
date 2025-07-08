@@ -127,6 +127,11 @@ export const ChatImpl = memo(
     const [fakeLoading, setFakeLoading] = useState(false);
     const files = useStore(workbenchStore.files);
     const [designScheme, setDesignScheme] = useState<DesignScheme>(defaultDesignScheme);
+
+    // URL parameter sequencing state variables
+    const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
+    const [templateLoading, setTemplateLoading] = useState(false);
+    const [templateLoadComplete, setTemplateLoadComplete] = useState(false);
     const actionAlert = useStore(workbenchStore.alert);
     const deployAlert = useStore(workbenchStore.deployAlert);
     const supabaseConn = useStore(supabaseConnection); // Add this line to get Supabase connection
@@ -181,6 +186,7 @@ export const ChatImpl = memo(
       },
       sendExtraMessageFields: true,
       onError: (e) => {
+        console.log('🐛 Chat Debug: onError triggered', { error: e.message, stack: e.stack });
         logger.error('Request failed\n\n', e, error);
         logStore.logError('Chat request failed', e, {
           component: 'Chat',
@@ -192,6 +198,11 @@ export const ChatImpl = memo(
         );
       },
       onFinish: (message, response) => {
+        console.log('🐛 Chat Debug: onFinish triggered', {
+          messageLength: message.content.length,
+          responseUsage: response.usage,
+        });
+
         const usage = response.usage;
         setData(undefined);
 
@@ -217,8 +228,23 @@ export const ChatImpl = memo(
       const templateUrl = searchParams.get('template');
       const modelParam = searchParams.get('model');
 
+      console.log('🐛 URL Parameter Debug: Effect triggered', {
+        prompt,
+        templateUrl,
+        modelParam,
+        currentModel: model,
+        currentProvider: provider.name,
+        searchParamsSize: searchParams.toString().length,
+        effectTriggerTime: new Date().toISOString(),
+      });
+
       // Handle model parameter
       if (modelParam && modelParam !== model) {
+        console.log('🐛 URL Parameter Debug: Processing model parameter change', {
+          from: model,
+          to: modelParam,
+        });
+
         // Find the provider for this model by checking all providers
         const allModels = PROVIDER_LIST.flatMap((p) => p.staticModels || []);
         const modelInfo = allModels.find((m) => m.name === modelParam || m.label === modelParam);
@@ -227,19 +253,45 @@ export const ChatImpl = memo(
           const modelProvider = PROVIDER_LIST.find((p) => p.name === modelInfo.provider);
 
           if (modelProvider) {
+            console.log('🐛 URL Parameter Debug: Model/Provider updated', {
+              model: modelInfo.name,
+              provider: modelProvider.name,
+            });
             setModel(modelInfo.name);
             setProvider(modelProvider as ProviderInfo);
             Cookies.set('selectedModel', modelInfo.name, { expires: 30 });
             Cookies.set('selectedProvider', modelProvider.name, { expires: 30 });
+
+            return; // Exit early to let the effect re-run with new model/provider
           }
         }
       }
 
       // console.log(prompt, searchParams, model, provider);
 
-      if (prompt) {
+      // Sequential processing logic for URL parameters
+      if (prompt && templateUrl) {
+        // Both parameters present - process template first, then queue prompt
+        console.log('🐛 URL Parameter Debug: Both template and prompt detected, processing template first');
+        console.log('URL Parameter Sequencing: Both template and prompt detected, processing template first');
         setSearchParams({});
         runAnimation();
+        setPendingPrompt(prompt);
+        setTemplateLoading(true);
+        processTemplateUrl(templateUrl);
+      } else if (prompt) {
+        // Only prompt parameter - existing behavior
+        console.log('🐛 URL Parameter Debug: Only prompt detected, processing immediately', {
+          prompt,
+          model,
+          provider: provider.name,
+          chatStarted,
+          isLoading,
+        });
+        setSearchParams({});
+        runAnimation();
+
+        console.log('🐛 URL Parameter Debug: About to call append with prompt');
         append({
           role: 'user',
           content: [
@@ -249,21 +301,43 @@ export const ChatImpl = memo(
             },
           ] as any, // Type assertion to bypass compiler check
         });
+        console.log('🐛 URL Parameter Debug: Append called successfully');
       } else if (templateUrl) {
+        // Only template parameter - existing behavior
+        console.log('🐛 URL Parameter Debug: Only template detected, processing template');
         setSearchParams({});
         runAnimation();
-
-        // Process template URL
         processTemplateUrl(templateUrl);
+      } else {
+        console.log('🐛 URL Parameter Debug: No URL parameters detected');
       }
     }, [model, provider, searchParams]);
 
-    const processTemplateUrl = async (templateUrl: string) => {
+    const processTemplateUrl = async (templateParam: string) => {
       try {
         setFakeLoading(true);
+        setTemplateLoading(true);
 
-        const { getTemplateFromUrl } = await import('~/utils/selectStarterTemplate');
-        const result = await getTemplateFromUrl(templateUrl);
+        // Determine if templateParam is a template name or a GitHub URL
+        const isGitHubUrl = templateParam.includes('github.com') || templateParam.startsWith('http');
+
+        let result;
+
+        if (isGitHubUrl) {
+          // Handle GitHub URL
+          console.log('URL Parameter Sequencing: Processing GitHub URL template:', templateParam);
+
+          const { getTemplateFromUrl } = await import('~/utils/selectStarterTemplate');
+
+          result = await getTemplateFromUrl(templateParam);
+        } else {
+          // Handle template name from STARTER_TEMPLATES
+          console.log('URL Parameter Sequencing: Processing template name:', templateParam);
+
+          const { getTemplates } = await import('~/utils/selectStarterTemplate');
+
+          result = await getTemplates(templateParam);
+        }
 
         if (result) {
           const { assistantMessage, userMessage } = result;
@@ -280,13 +354,53 @@ export const ChatImpl = memo(
               annotations: ['hidden'],
             },
           ]);
-          reload();
+
+          // Wait for template to be fully processed
+          await reload();
+
+          // Mark template as complete for sequential processing
+          setTemplateLoadComplete(true);
+          console.log('URL Parameter Sequencing: Template loading completed');
         }
       } catch (error) {
-        console.error('Error processing template URL:', error);
-        toast.error('Failed to load template from URL: ' + (error instanceof Error ? error.message : 'Unknown error'));
+        console.error('Error processing template:', error);
+        toast.error('Failed to load template: ' + (error instanceof Error ? error.message : 'Unknown error'));
+
+        // If template fails and we have a pending prompt, process it anyway
+        if (pendingPrompt) {
+          console.log('URL Parameter Sequencing: Template failed, processing pending prompt with blank template');
+          processPendingPrompt();
+        }
       } finally {
         setFakeLoading(false);
+        setTemplateLoading(false);
+      }
+    };
+
+    // Effect to handle pending prompt after template completion
+    useEffect(() => {
+      if (templateLoadComplete && pendingPrompt && !templateLoading) {
+        console.log('URL Parameter Sequencing: Auto-submitting pending prompt after template completion');
+        processPendingPrompt();
+      }
+    }, [templateLoadComplete, pendingPrompt, templateLoading]);
+
+    const processPendingPrompt = () => {
+      if (pendingPrompt) {
+        append({
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${pendingPrompt}`,
+            },
+          ] as any,
+        });
+
+        // Clear pending prompt and reset state
+        setPendingPrompt(null);
+        setTemplateLoadComplete(false);
+        console.log('URL Parameter Sequencing: Pending prompt submitted successfully');
       }
     };
 
